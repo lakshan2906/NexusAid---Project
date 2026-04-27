@@ -1,0 +1,13 @@
+{
+  "name": "NexusAid",
+  "description": "AI-Powered Decentralized Disaster Response System for real-time victim-NGO matching, resource tracking, and offline coordination.",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "AI Emergency NLP",
+    "Real-time Fleet Tracking",
+    "D3 Network Topology",
+    "Offline Mesh Coordination"
+  ]
+}

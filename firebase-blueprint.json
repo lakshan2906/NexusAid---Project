@@ -1,0 +1,124 @@
+{
+  "entities": {
+    "Request": {
+      "title": "Disaster Aid Request",
+      "description": "A request for aid from a victim area",
+      "type": "object",
+      "properties": {
+        "victimId": { "type": "string" },
+        "victimName": { "type": "string" },
+        "text": { "type": "string", "description": "Original raw message" },
+        "needs": {
+          "type": "object",
+          "properties": {
+            "food": { "type": "integer" },
+            "medical": { "type": "integer" },
+            "water": { "type": "integer" },
+            "shelter": { "type": "integer" },
+            "clothes": { "type": "integer" }
+          }
+        },
+        "injuredCount": { "type": "integer" },
+        "peopleCount": { "type": "integer" },
+        "urgency": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+        "location": {
+          "type": "object",
+          "properties": {
+            "lat": { "type": "number" },
+            "lng": { "type": "number" },
+            "address": { "type": "string" }
+          }
+        },
+        "status": { "type": "string", "enum": ["pending", "processing", "assigned", "dispatched", "completed", "cancelled"] },
+        "assignedNgoId": { "type": "string" },
+        "disasterName": { "type": "string", "description": "The name of the disaster group this request belongs to" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["text", "status", "createdAt"]
+    },
+    "NGO": {
+      "title": "Non-Governmental Organization",
+      "description": "An organization providing disaster relief",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "specialization": { "type": "array", "items": { "type": "string" } },
+        "capacity": { "type": "integer" },
+        "location": {
+          "type": "object",
+          "properties": {
+            "lat": { "type": "number" },
+            "lng": { "type": "number" }
+          }
+        },
+        "contact": { "type": "string" },
+        "activeDeliveries": { "type": "integer" }
+      }
+    },
+    "Delivery": {
+      "title": "Relief Delivery Task",
+      "description": "Tracking of a specific delivery from NGO to Victim",
+      "type": "object",
+      "properties": {
+        "requestId": { "type": "string" },
+        "ngoId": { "type": "string" },
+        "driverName": { "type": "string" },
+        "currentLocation": {
+          "type": "object",
+          "properties": {
+            "lat": { "type": "number" },
+            "lng": { "type": "number" }
+          }
+        },
+        "status": { "type": "string", "enum": ["en-route", "arrived", "delivered"] },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "Obstacle": {
+      "title": "Road Obstacle",
+      "description": "A reported road block or hazard",
+      "type": "object",
+      "properties": {
+        "lat": { "type": "number" },
+        "lng": { "type": "number" },
+        "type": { "type": "string" },
+        "severity": { "type": "string" },
+        "description": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "Log": {
+      "title": "System Log",
+      "description": "Record of system actions",
+      "type": "object",
+      "properties": {
+        "action": { "type": "string" },
+        "obstacleId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "firestore": {
+    "/requests/{requestId}": {
+      "schema": "Request",
+      "description": "Disaster relief requests"
+    },
+    "/ngos/{ngoId}": {
+      "schema": "NGO",
+      "description": "NGO registry"
+    },
+    "/deliveries/{deliveryId}": {
+      "schema": "Delivery",
+      "description": "Active and completed delivery tracking"
+    },
+    "/obstacles/{obstacleId}": {
+      "schema": "Obstacle",
+      "description": "Road hazards and blocks"
+    },
+    "/logs/{logId}": {
+      "schema": "Log",
+      "description": "System activity logs"
+    }
+  }
+}
